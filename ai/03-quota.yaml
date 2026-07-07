@@ -1,0 +1,44 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: token-quota-team
+  namespace: ai
+spec:
+  plugin:
+    ai-quota:
+      store:
+        redis:
+          endpoints:
+            - redis-stack-server.redis-stack.svc.cluster.local:6379
+      totalTokenLimit:
+        limit: 1600
+        period: 24h
+      sourceCriterion:
+        requestHeaderName: groups
+      onDenyResponse:
+        statusCode: 429
+        message: '{"Error":"team quota reached"}'
+        contentType: "application/json"
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: token-quota-user
+  namespace: ai
+spec:
+  plugin:
+    ai-quota:
+      store:
+        redis:
+          endpoints:
+            - redis-stack-server.redis-stack.svc.cluster.local:6379
+      totalTokenLimit:
+        limit: 1000
+        period: 24h
+      sourceCriterion:
+        requestHeaderName: username
+      onDenyResponse:
+        statusCode: 429
+        message: '{"Error":"user quota reached"}'
+        contentType: "application/json"

@@ -1,0 +1,39 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bedrock-parent
+  namespace: ai
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic/v1/messages`)
+      observability:
+        accessLogs: true
+      middlewares:
+        - name: jwt
+        - name: messagesapi-bedrock
+        - name: token-quota-team
+        # - name: semantic-cache
+  tls: {}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bedrock-child-sonnet
+  namespace: ai
+spec:
+  parentRefs:
+    - name: bedrock-parent
+  routes:
+    - kind: Rule
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`)
+      services:
+        - name: bedrock-svc
+          kind: Service
+          port: 443
+          passHostHeader: false
+      middlewares:
+        - name: token-quota-user

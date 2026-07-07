@@ -1,0 +1,75 @@
+image:
+  registry: europe-west9-docker.pkg.dev/traefiklabs
+  repository: traefik-hub/traefik-hub
+  tag: latest-v3
+  pullPolicy: Always
+deployment:
+  replicas: 1
+ingressRoute:
+  dashboard:
+    enabled: false
+ingressClass:
+  enabled: false
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+    allowExternalNameServices: true
+    allowEmptyServices: true
+log:
+  format: json
+  level: DEBUG
+accessLog:
+  enabled: true
+  format: json
+  addInternals: false
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: keep
+metrics:
+  addInternals: false
+  prometheus: null
+  otlp:
+    enabled: true
+    addRoutersLabels: true
+    grpc:
+      enabled: true
+      insecure: true
+      endpoint: otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317
+      tls: null
+tracing:
+  addInternals: false
+  otlp:
+    enabled: true
+    grpc:
+      enabled: true
+      insecure: true
+      endpoint: otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317
+      tls: null
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 1
+  limits:
+    memory: 1Gi
+    cpu: 1
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: wildcard-mageekbox
+ports:
+  websecure:
+    asDefault: true
+    http:
+      tls:
+        enabled: true
+hub:
+  sendlogs: false
+  token: hub-license
+  offline: true
+  aigateway: 
+    enabled: true
+  redis:
+    endpoints: redis-stack-server.redis-stack.svc.cluster.local:6379
+    database: "1"

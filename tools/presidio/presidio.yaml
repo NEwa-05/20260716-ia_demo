@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: presidio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presidio-analyzer
+  namespace: presidio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: presidio-analyzer
+  template:
+    metadata:
+      labels:
+        app: presidio-analyzer
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "5002"
+        - name: LOG_LEVEL
+          value: DEBUG
+        image: mcr.microsoft.com/presidio-analyzer:latest
+        imagePullPolicy: IfNotPresent
+        name: presidio-analyzer
+        ports:
+        - containerPort: 5002
+          name: presidio
+          protocol: TCP
+        resources: 
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 1
+            memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: presidio-analyzer
+  name: presidio-analyzer-svc
+  namespace: presidio
+spec:
+  selector:
+    app: presidio-analyzer
+  type: ClusterIP
+  ports:
+  - name: presidio
+    port: 5002
+    protocol: TCP
+    targetPort: 5002
+

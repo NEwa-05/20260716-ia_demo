@@ -1,0 +1,42 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: llmguard
+  namespace: ai
+spec:
+  plugin:
+    llm-guard:
+      endpoint: https://api.openai.com/v1/chat/completions
+      clientConfig:
+        headers:
+          Authorization: urn:k8s:secret:openaiauth:token
+      clientRequestFormat: messagesAPI
+      format:
+        ccr:
+          model: "gpt-4o"
+          params:
+            temperature: 1
+            topP: 1
+            frequencyPenalty: 0
+            presencePenalty: 0
+      request:
+        systemPrompt: |
+          Task: Check if the message is about fruits and answer with only true or false as a string.
+        blockConditions:
+          - reason: fruit_content
+            condition: Contains("True")
+            OnDenyResponse:
+              StatusCode: 206
+              Message: '{"Error":"This is fruity, I can not comply"}'
+              ContentType: "application/json"
+      response:
+        systemPrompt: |
+          Task: Check if the message contains the word strawberry in it and answer with only true or false as a string.
+        blockConditions:
+          - reason: fruit_content
+            condition: Contains("True")  
+            OnDenyResponse:
+              StatusCode: 206
+              Message: '{"Error":"This is not a berry, I can not comply"}'
+              ContentType: "application/json"

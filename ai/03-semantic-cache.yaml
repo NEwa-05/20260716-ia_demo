@@ -1,0 +1,27 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: semantic-cache
+  namespace: ai
+spec:
+  plugin:
+    semantic-cache:
+      ignoreSystem: false
+      ignoreAssistant: true
+      ignoreTool: true
+      messageHistory: 5
+      vectorDB:
+        redis:
+          endpoints:
+            - redis-stack-server.redis-stack.svc.cluster.local:6379
+          collectionName: "ai_cache"
+          maxDistance: 0.001
+          ttl: 3600
+      vectorizer:
+        openai:
+          model: "text-embedding-3-small"
+          token: urn:k8s:secret:openaikey:token
+          dimensions: 1024
+      readOnly: false
+      allowBypass: false

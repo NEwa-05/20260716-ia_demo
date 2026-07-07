@@ -1,0 +1,13 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: jwt
+  namespace: ai
+spec:
+  plugin:
+    jwt:
+      jwksUrl: https://lemur-3.cloud-iam.com/auth/realms/localdemo/protocol/openid-connect/certs
+      forwardHeaders:
+        username: preferred_username
+        groups: groups
