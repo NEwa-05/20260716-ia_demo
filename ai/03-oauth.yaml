@@ -19,4 +19,3 @@ spec:
         username: preferred_username
         groups: groups
       identity: preferred_username
-      

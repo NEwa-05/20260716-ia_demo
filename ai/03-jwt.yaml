@@ -12,3 +12,5 @@ spec:
         username: preferred_username
         groups: groups
       identity: preferred_username
+      ## needed if using destop app
+      # tokenKey: x-api-key
