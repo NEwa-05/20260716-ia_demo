@@ -115,3 +115,5 @@ kubectl create secret generic bedrockkey --from-literal=token="${AWS_BEARER_TOKE
 kubectl create secret generic openaiauth --from-literal=token="Bearer ${OPENAI_APIKEY}" -n ai
 kubectl create secret generic openaikey --from-literal=token="${OPENAI_APIKEY}" -n ai
 ```
+
+![Architecture schema](arch-schema.png)
