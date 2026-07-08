@@ -21,18 +21,42 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: bedrock-child
+  name: bedrock-child-haiku
   namespace: ai
 spec:
   parentRefs:
     - name: bedrock-parent
   routes:
     - kind: Rule
-      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic/v1/messages`)
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic/v1/messages`) && Model(`anthropic.claude-haiku-4-5`)
       services:
         - name: bedrock-svc
           kind: Service
           port: 443
           passHostHeader: false
+          middlewares:
+            - name: global-token-quota
       middlewares:
-        - name: token-quota-user
+        - name: token-quota-user-haiku
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bedrock-child-opus
+  namespace: ai
+spec:
+  parentRefs:
+    - name: bedrock-parent
+  routes:
+    - kind: Rule
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic/v1/messages`) && Model(`anthropic.claude-opus-4-7`)
+      services:
+        - name: bedrock-svc
+          kind: Service
+          port: 443
+          passHostHeader: false
+          middlewares:
+            - name: global-token-quota
+      middlewares:
+        - name: token-quota-user-opus
+

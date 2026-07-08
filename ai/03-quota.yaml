@@ -2,6 +2,28 @@
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
+  name: global-token-quota
+  namespace: ai
+spec:
+  plugin:
+    ai-quota:
+      store:
+        redis:
+          endpoints:
+            - redis-stack-server.redis-stack.svc.cluster.local:6379
+      totalTokenLimit:
+        limit: 10000
+        period: 24h
+      sourceCriterion:
+        requestHost: true
+      onDenyResponse:
+        statusCode: 429
+        message: '{"Error":"global quota reached"}'
+        contentType: "application/json"
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
   name: token-quota-team
   namespace: ai
 spec:
@@ -12,7 +34,7 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       totalTokenLimit:
-        limit: 1600
+        limit: 3000
         period: 24h
       sourceCriterion:
         requestHeaderName: groups
@@ -24,7 +46,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: token-quota-user
+  name: token-quota-user-opus
   namespace: ai
 spec:
   plugin:
@@ -34,11 +56,33 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       totalTokenLimit:
-        limit: 1000
+        limit: 700
         period: 24h
       sourceCriterion:
         requestHeaderName: username
       onDenyResponse:
         statusCode: 429
-        message: '{"Error":"user quota reached"}'
+        message: '{"Error":"user quota reached for Opus model"}'
+        contentType: "application/json"
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: token-quota-user-haiku
+  namespace: ai
+spec:
+  plugin:
+    ai-quota:
+      store:
+        redis:
+          endpoints:
+            - redis-stack-server.redis-stack.svc.cluster.local:6379
+      totalTokenLimit:
+        limit: 1300
+        period: 24h
+      sourceCriterion:
+        requestHeaderName: username
+      onDenyResponse:
+        statusCode: 429
+        message: '{"Error":"user quota reached for Haiku model"}'
         contentType: "application/json"

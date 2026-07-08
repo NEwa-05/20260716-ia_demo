@@ -9,8 +9,12 @@ spec:
     bedrock-mantle:
       apiKey: urn:k8s:secret:bedrockkey:token
       region: eu-north-1
-      allowModelOverride: true
-      allowParamsOverride: true
-      params:
-        temperature: 1
-        maxTokens: 2048
+      anthropic:
+        allowModelOverride: true
+        allowParamsOverride: true
+        params:
+          temperature: 1
+          maxTokens: 2048
+        metrics:
+          hub:
+            tokenSaved: true
