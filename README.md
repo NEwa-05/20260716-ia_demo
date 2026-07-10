@@ -114,7 +114,8 @@ done
 kubectl create secret generic bedrockkey --from-literal=token="${AWS_BEARER_TOKEN_BEDROCK}" -n ai
 kubectl create secret generic openaiauth --from-literal=token="Bearer ${OPENAI_APIKEY}" -n ai
 kubectl create secret generic openaikey --from-literal=token="${OPENAI_APIKEY}" -n ai
-kubectl create secret generic oauth --from-literal=auth="Basic $(echo -n bapi:${G_CLIENT_SECRET}|base64)" -n ai
+kubectl create secret generic koauth --from-literal=auth="Basic $(echo -n bapi:$CLIENT_SECRET|base64)" -n ai
+kubectl create secret generic gclient --from-literal=client-id=$G_CLIENT_ID --from-literal=client-secret=$G_CLIENT_SECRET -n ai
 ```
 
 ![Architecture schema](arch-schema.png)

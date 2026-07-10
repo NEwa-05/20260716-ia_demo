@@ -11,9 +11,9 @@ spec:
         header: Authorization
         headerAuthScheme: Bearer
       clientConfig:
-        url: 
+        url: https://lemur-3.cloud-iam.com/auth/realms/localdemo/protocol/openid-connect/token/introspect
         headers:
-          Authorization: 
+          Authorization: urn:k8s:secret:koauth:auth
       tokenTypeHint: access_token
       forwardHeaders:
         username: preferred_username

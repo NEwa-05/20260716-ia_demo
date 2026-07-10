@@ -11,10 +11,12 @@ spec:
     - kind: Rule
       match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`)
       middlewares:
-        - name: jwt
-        # - name: oauth
+        # - name: jwt
+        - name: oauth
         - name: messagesapi-bedrock
         - name: token-quota-team
+        - name: content-guard-regex
+        - name: llmguard
         - name: semantic-cache
   tls: {}
 ---
@@ -28,7 +30,7 @@ spec:
     - name: bedrock-parent
   routes:
     - kind: Rule
-      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && Model(`anthropic.claude-haiku-4-5`)
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic`) && Model(`anthropic.claude-haiku-4-5`)
       services:
         - name: bedrock-svc
           kind: Service
@@ -49,7 +51,7 @@ spec:
     - name: bedrock-parent
   routes:
     - kind: Rule
-      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && Model(`anthropic.claude-opus-4-7`)
+      match: Host(`bapi.${CLUSTERNAME}.${DOMAINNAME}`) && PathPrefix(`/anthropic`) && Model(`anthropic.claude-opus-4-7`)
       services:
         - name: bedrock-svc
           kind: Service

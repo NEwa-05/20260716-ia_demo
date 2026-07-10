@@ -24,9 +24,9 @@ accessLog:
   format: json
   addInternals: false
   fields:
-    defaultMode: keep
+    defaultmode: keep
     headers:
-      defaultMode: keep
+      defaultmode: keep
 metrics:
   addInternals: false
   prometheus: null

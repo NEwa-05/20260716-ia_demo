@@ -10,7 +10,7 @@ spec:
       jwksUrl: https://lemur-3.cloud-iam.com/auth/realms/localdemo/protocol/openid-connect/certs
       forwardHeaders:
         username: preferred_username
-        groups: groups
+        # groups: groups
       identity: preferred_username
-      ## needed if using destop app
+      # needed if using destop app
       # tokenKey: x-api-key

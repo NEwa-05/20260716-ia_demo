@@ -7,7 +7,6 @@ metadata:
 spec:
   plugin:
     content-guard:
-      ClientRequestFormat: messagesAPI
       engine:
         regex: {}
       request:
@@ -18,15 +17,4 @@ spec:
         OnDenyResponse:
           StatusCode: 206
           Message: '{"Error":"sensitive data detected"}'
-          ContentType: "application/json"
-      response:
-        rules:
-          - jsonQueries:
-              - ".content[].text"
-            entities: 
-              - '(?i)(salmon|trout)'
-            block: true
-        OnDenyResponse:
-          StatusCode: 206
-          Message: '{"Error":"Fishy"}'
           ContentType: "application/json"

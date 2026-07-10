@@ -30,13 +30,3 @@ spec:
               StatusCode: 206
               Message: '{"Error":"This is fruity, I can not comply"}'
               ContentType: "application/json"
-      response:
-        systemPrompt: |
-          Task: Check if the message contains the word strawberry in it and answer with only true or false as a string.
-        blockConditions:
-          - reason: fruit_content
-            condition: Contains("True")  
-            OnDenyResponse:
-              StatusCode: 206
-              Message: '{"Error":"This is not a berry, I can not comply"}'
-              ContentType: "application/json"
