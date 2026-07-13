@@ -68,8 +68,6 @@ hub:
   sendlogs: false
   token: hub-license
   offline: true
-  aigateway: 
+  aigateway:
     enabled: true
-  redis:
-    endpoints: redis-stack-server.redis-stack.svc.cluster.local:6379
-    database: "1"
+

@@ -1,6 +1,6 @@
 # Tests
 
-## With JWT
+## With Oauth
 
 ### Exhaust OPUS user quota
 
