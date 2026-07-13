@@ -97,7 +97,16 @@ envsubst < ./tools/observability/prometheus-stack/ingress.yaml | kubectl apply -
 
 ```shell
 kubectl create ns ai
-for i in $(find ./ai -type f -follow -print); do
+for i in $(find ./ai-features -type f -follow -print); do
+  envsubst < $i | kubectl apply -f -
+done
+```
+
+or
+
+```shell
+kubectl create ns ai
+for i in $(find ./ai-gauth -type f -follow -print); do
   envsubst < $i | kubectl apply -f -
 done
 ```
