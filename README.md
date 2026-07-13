@@ -22,12 +22,6 @@ source ./.env
 helm upgrade --install redis-stack redis-stack/redis-stack-server --namespace redis-stack --values ./tools/redis/values.yaml --create-namespace
 ```
 
-### Deploy Presidio
-
-```shell
-kubectl apply -f ./tools/presidio/presidio.yaml
-```
-
 ### deploy observability
 
 ```shell
