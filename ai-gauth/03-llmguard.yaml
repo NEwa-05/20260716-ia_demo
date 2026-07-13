@@ -22,11 +22,11 @@ spec:
             presencePenalty: 0
       request:
         systemPrompt: |
-          Task: Check if the message is about fruits and answer with only true or false as a string.
+          Task: Check if the message is about Rust lang and answer with only true or false as a string.
         blockConditions:
           - reason: fruit_content
             condition: Contains("True")
             OnDenyResponse:
               StatusCode: 206
-              Message: '{"Error":"This is fruity, I can not comply"}'
+              Message: '{"Error":"Rust Lang request, I can not comply"}'
               ContentType: "application/json"

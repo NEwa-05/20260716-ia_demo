@@ -1,0 +1,20 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: messagesapi-bedrock
+  namespace: ai
+spec:
+  plugin:
+    bedrock-mantle:
+      apiKey: urn:k8s:secret:bedrockkey:token
+      region: eu-north-1
+      anthropic:
+        allowModelOverride: true
+        allowParamsOverride: true
+        params:
+          temperature: 1
+          maxTokens: 2048
+        metrics:
+          hub:
+            tokenSaved: true
