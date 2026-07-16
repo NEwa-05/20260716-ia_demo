@@ -12,7 +12,7 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       outputTokenLimit:
-        limit: 7000
+        limit: 4800
         period: 24h
       sourceCriterion:
         requestHost: true
@@ -34,7 +34,7 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       outputTokenLimit:
-        limit: 2000
+        limit: 1600
         period: 24h
       sourceCriterion:
         requestHeaderName: groups
@@ -56,7 +56,7 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       outputTokenLimit:
-        limit: 700
+        limit: 600
         period: 24h
       sourceCriterion:
         requestHeaderName: username
@@ -78,7 +78,7 @@ spec:
           endpoints:
             - redis-stack-server.redis-stack.svc.cluster.local:6379
       outputTokenLimit:
-        limit: 1300
+        limit: 800
         period: 24h
       sourceCriterion:
         requestHeaderName: username
